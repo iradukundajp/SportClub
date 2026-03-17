@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>ClubSport</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g1:#2D7D46;--g2:#4CAF72;--g3:#8BC34A;--gl:#E8F5E9;--gf:#F1F8F2;--gb:#C8E6C9;--w:#fff;--bg:#F5F9F5;--t1:#111;--t2:#444;--t3:#888;--warn:#F59E0B;--info:#3B82F6;--ok:#22C55E}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:#1a1a1a;display:flex;justify-content:center;padding:20px 12px;min-height:100vh}
+.shell{width:390px;background:var(--bg);border-radius:46px;border:10px solid #111;box-shadow:0 0 0 2px #333,0 36px 72px rgba(0,0,0,.65);overflow:hidden;position:relative;display:flex;flex-direction:column;min-height:820px}
+.notch{height:30px;background:#111;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.np{width:94px;height:12px;background:#222;border-radius:6px}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:5px 18px 3px;flex-shrink:0}
+.sbt{font-size:14px;font-weight:700;color:var(--t1)}
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden;animation:si .28s ease}
+.screen.active{display:flex}
+@keyframes si{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.sa{flex:1;overflow-y:auto}.sa::-webkit-scrollbar{display:none}
+.bn{display:flex;justify-content:space-around;align-items:center;padding:7px 0 16px;background:var(--w);border-top:1px solid var(--gb);flex-shrink:0}
+.bni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:3px 12px}
+.bic{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.bni.on .bic{background:var(--g1)}.bni .blb{font-size:9px;color:var(--t3)}.bni.on .blb{color:var(--g2)}
+.card{background:var(--w);border-radius:14px;border:1px solid var(--gb)}.cp{padding:13px 15px}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;background:var(--gl);color:var(--g1);border:1px solid var(--gb)}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;border:none;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14px;padding:12px;transition:filter .15s}.btn:hover{filter:brightness(.9)}
+.bg{background:var(--g1);color:#fff}.bgo{background:var(--g2);color:var(--g1)}.bo{background:var(--gf);color:var(--g1);border:1px solid var(--gb)}
+.slbl{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.08em;margin-bottom:7px}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.pt{height:5px;background:var(--gl);border-radius:3px;overflow:hidden}.pf{height:100%;border-radius:3px;background:var(--g2)}
+.back{display:flex;align-items:center;gap:5px;font-size:16px;font-weight:800;color:var(--t1);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;padding:0}
+#splash{background:var(--g1)}
+.db{display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 10px;border-radius:10px;cursor:pointer;border:none;background:var(--gl);font-family:'DM Sans',sans-serif;min-width:42px}
+.db.sel{background:var(--g1)}.da{font-size:11px;font-weight:500;color:var(--t3)}.dn{font-size:15px;font-weight:800;color:var(--t1)}.db.sel .da,.db.sel .dn{color:#fff}
+.ts{background:var(--w);border-radius:12px;border:1px solid var(--gb);padding:11px 13px;display:flex;align-items:center;gap:11px;margin-bottom:8px;cursor:pointer}.ts:hover{border-color:var(--g1)}
+.tb{min-width:52px;text-align:center;background:var(--gl);border-radius:8px;padding:5px 3px}.tv{font-size:13px;font-weight:800;color:var(--g1)}
+.sbar{width:6px;border-radius:3px;align-self:stretch;flex-shrink:0}
+.fc{background:var(--w);border-radius:14px;border:1px solid var(--gb);padding:13px 14px;margin-bottom:10px}
+.si{width:44px;height:44px;border-radius:50%;background:var(--g1);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0}
+.toast{position:absolute;bottom:85px;left:50%;transform:translateX(-50%) translateY(10px);background:#111;color:#fff;padding:9px 18px;border-radius:20px;font-size:12px;font-weight:600;z-index:99;opacity:0;transition:.25s;pointer-events:none;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:420px){body{padding:0}.shell{width:100%;min-height:100dvh;border-radius:0;border:none;box-shadow:none}}
+@media(min-width:500px){body{align-items:center}}
+</style>
+</head>
+<body>
+<div class="shell">
+<div class="notch"><div class="np"></div></div>
+
+<!-- SPLASH -->
+<div class="screen active" id="splash">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;text-align:center">
+    <div style="width:78px;height:78px;border-radius:22px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;margin-bottom:20px"><svg width="42" height="42" viewBox="0 0 42 42" fill="none"><circle cx="21" cy="21" r="14" stroke="white" stroke-width="2"/><circle cx="21" cy="21" r="6" stroke="white" stroke-width="1.8" fill="none"/><path d="M11 11l6 6M31 11l-6 6M11 31l6-6M31 31l-6-6" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+    <p style="font-size:46px;font-weight:800;color:#fff;letter-spacing:-1.5px;margin-bottom:8px">ClubSport</p>
+    <p style="font-size:15px;color:rgba(255,255,255,.8);margin-bottom:6px">The ecosystem that gets Belgium moving</p>
+    <p style="font-size:13px;color:rgba(255,255,255,.55);margin-bottom:36px;line-height:1.6">Find your sport. Find your team.<br>Get there. Afford it. No barriers.</p>
+    <button class="btn bgo" style="margin-bottom:10px;font-size:15px" onclick="go('discover')">Get started &#8594;</button>
+    <button class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="go('home')">I already have an account</button>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:22px">
+      <span style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);padding:4px 11px;border-radius:20px;font-size:11px">⚽ Football</span>
+      <span style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);padding:4px 11px;border-radius:20px;font-size:11px">🎾 Tennis</span>
+      <span style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);padding:4px 11px;border-radius:20px;font-size:11px">🏸 Badminton</span>
+      <span style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);padding:4px 11px;border-radius:20px;font-size:11px">🏊 Swimming</span>
+      <span style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);padding:4px 11px;border-radius:20px;font-size:11px">🥋 Judo</span>
+      <span style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);padding:4px 11px;border-radius:20px;font-size:11px">🏉 Rugby</span>
+      <span style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);padding:4px 11px;border-radius:20px;font-size:11px">🎯 Archery</span>
+      <span style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);padding:4px 11px;border-radius:20px;font-size:11px">🤸 Gymnastics</span>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 1: DISCOVER SPORTS -->
+<div class="screen" id="discover">
+  <div class="sb"><span class="sbt">9:41</span></div>
+  <div style="padding:0 16px 6px">
+    <p style="font-size:24px;font-weight:800;color:var(--t1);margin-bottom:2px">Discover Sports</p>
+    <p style="font-size:13px;color:var(--t3);margin-bottom:10px">Clubs and sessions near you</p>
+    <!-- Tabs -->
+    <div style="display:flex;gap:8px">
+      <button id="tab-pop" onclick="switchTab('pop')" style="flex:1;padding:8px;border-radius:10px;border:none;background:var(--g1);color:#fff;font-weight:700;font-size:13px;cursor:pointer">Popular</button>
+      <button id="tab-rare" onclick="switchTab('rare')" style="flex:1;padding:8px;border-radius:10px;border:1px solid var(--gborder);background:#fff;color:var(--t2);font-weight:600;font-size:13px;cursor:pointer">Hard to find 🔍</button>
+    </div>
+  </div>
+
+  <!-- POPULAR LIST -->
+  <div class="sa" id="list-pop" style="padding:10px 16px 80px">
+    <div class="card cp" style="margin-bottom:8px;cursor:pointer" onclick="go('join')"><div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div class="si">F</div><div><p style="font-size:16px;font-weight:800;color:var(--t1)">Football</p><p style="font-size:12px;color:var(--t3)">Sporthal Deurne  -  0.8 km</p></div></div><div style="display:flex;gap:7px"><span class="tag">18:00</span><span class="tag">4 spots</span></div></div>
+    <div class="card cp" style="margin-bottom:8px;cursor:pointer" onclick="go('times')"><div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div class="si" style="background:#1B8A6B">T</div><div><p style="font-size:16px;font-weight:800;color:var(--t1)">Tennis</p><p style="font-size:12px;color:var(--t3)">TC Antwerp  -  1.2 km</p></div></div><div style="display:flex;gap:7px"><span class="tag">19:30</span><span class="tag">2 spots</span></div></div>
+    <div class="card cp" style="margin-bottom:8px;cursor:pointer" onclick="go('join')"><div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div class="si" style="background:#7B2D8B">P</div><div><p style="font-size:16px;font-weight:800;color:var(--t1)">Padel</p><p style="font-size:12px;color:var(--t3)">Padel Club Wilrijk  -  2.1 km</p></div></div><div style="display:flex;gap:7px"><span class="tag">20:00</span><span class="tag">6 spots</span></div></div>
+    <div class="card cp" style="margin-bottom:8px;cursor:pointer" onclick="go('join')"><div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div class="si" style="background:#B45309">G</div><div><p style="font-size:16px;font-weight:800;color:var(--t1)">Gym</p><p style="font-size:12px;color:var(--t3)">Fitness First  -  0.5 km</p></div></div><div style="display:flex;gap:7px"><span class="tag">Open now</span><span class="tag">Free</span></div></div>
+    <div class="card cp" style="cursor:pointer" onclick="go('join')"><div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><div class="si" style="background:#1D4ED8">B</div><div><p style="font-size:16px;font-weight:800;color:var(--t1)">Basketball</p><p style="font-size:12px;color:var(--t3)">Sporthal Merksem  -  3.0 km</p></div></div><div style="display:flex;gap:7px"><span class="tag">19:00</span><span class="tag">8 spots</span></div></div>
+  </div>
+
+  <!-- HARD TO FIND — 2-column grid of compact tiles -->
+  <div class="sa" id="list-rare" style="padding:10px 16px 80px;display:none">
+    <p style="font-size:11px;color:var(--t3);margin-bottom:10px;line-height:1.5">Sports that are hard to find in Belgium — ClubSport found them for you.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="card" style="padding:12px;cursor:pointer;text-align:center" onclick="showToast('🏸 Badminton added!')"><div style="font-size:26px;margin-bottom:6px">🏸</div><p style="font-size:13px;font-weight:700;color:var(--t1)">Badminton</p><p style="font-size:10px;color:var(--t3);margin:2px 0">BC Antwerp · 4.2 km</p><span style="background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700">Rare</span></div>
+      <div class="card" style="padding:12px;cursor:pointer;text-align:center" onclick="showToast('🥋 Judo added!')"><div style="font-size:26px;margin-bottom:6px">🥋</div><p style="font-size:13px;font-weight:700;color:var(--t1)">Judo</p><p style="font-size:10px;color:var(--t3);margin:2px 0">Judo Club Wilrijk · 3.8 km</p><span style="background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700">Rare</span></div>
+      <div class="card" style="padding:12px;cursor:pointer;text-align:center" onclick="showToast('🏉 Rugby added!')"><div style="font-size:26px;margin-bottom:6px">🏉</div><p style="font-size:13px;font-weight:700;color:var(--t1)">Rugby</p><p style="font-size:10px;color:var(--t3);margin:2px 0">RFC Antwerp · 5.1 km</p><span style="background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700">Rare</span></div>
+      <div class="card" style="padding:12px;cursor:pointer;text-align:center" onclick="showToast('🎯 Archery added!')"><div style="font-size:26px;margin-bottom:6px">🎯</div><p style="font-size:13px;font-weight:700;color:var(--t1)">Archery</p><p style="font-size:10px;color:var(--t3);margin:2px 0">Archery Club · 6.4 km</p><span style="background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700">Rare</span></div>
+      <div class="card" style="padding:12px;cursor:pointer;text-align:center" onclick="showToast('🤸 Gymnastics added!')"><div style="font-size:26px;margin-bottom:6px">🤸</div><p style="font-size:13px;font-weight:700;color:var(--t1)">Gymnastics</p><p style="font-size:10px;color:var(--t3);margin:2px 0">Gymzaal Hoboken · 4.7 km</p><span style="background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700">Rare</span></div>
+      <div class="card" style="padding:12px;cursor:pointer;text-align:center" onclick="showToast('🏊 Swimming added!')"><div style="font-size:26px;margin-bottom:6px">🏊</div><p style="font-size:13px;font-weight:700;color:var(--t1)">Swimming</p><p style="font-size:10px;color:var(--t3);margin:2px 0">Olympisch Zwembad · 2.9 km</p><span style="background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700">Rare</span></div>
+      <div class="card" style="padding:12px;cursor:pointer;text-align:center" onclick="showToast('🤼 Wrestling added!')"><div style="font-size:26px;margin-bottom:6px">🤼</div><p style="font-size:13px;font-weight:700;color:var(--t1)">Wrestling</p><p style="font-size:10px;color:var(--t3);margin:2px 0">Combat Club · 5.8 km</p><span style="background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700">Rare</span></div>
+      <div class="card" style="padding:12px;cursor:pointer;text-align:center" onclick="showToast('🏑 Field Hockey added!')"><div style="font-size:26px;margin-bottom:6px">🏑</div><p style="font-size:13px;font-weight:700;color:var(--t1)">Field Hockey</p><p style="font-size:10px;color:var(--t3);margin:2px 0">HC Antwerp · 7.2 km</p><span style="background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700">Rare</span></div>
+      <div class="card" style="padding:12px;cursor:pointer;text-align:center" onclick="showToast('🥊 Boxing added!')"><div style="font-size:26px;margin-bottom:6px">🥊</div><p style="font-size:13px;font-weight:700;color:var(--t1)">Boxing</p><p style="font-size:10px;color:var(--t3);margin:2px 0">Boxing Club · 3.5 km</p><span style="background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700">Rare</span></div>
+      <div class="card" style="padding:12px;cursor:pointer;text-align:center" onclick="showToast('🧗 Climbing added!')"><div style="font-size:26px;margin-bottom:6px">🧗</div><p style="font-size:13px;font-weight:700;color:var(--t1)">Climbing</p><p style="font-size:10px;color:var(--t3);margin:2px 0">Klimzaal De Put · 4.0 km</p><span style="background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700">Rare</span></div>
+      <div class="card" style="padding:12px;cursor:pointer;text-align:center" onclick="showToast('🛹 Skateboarding added!')"><div style="font-size:26px;margin-bottom:6px">🛹</div><p style="font-size:13px;font-weight:700;color:var(--t1)">Skateboarding</p><p style="font-size:10px;color:var(--t3);margin:2px 0">Skatepark Noord · 1.8 km</p><span style="background:#E0F2FE;color:#0369A1;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700">Free</span></div>
+      <div class="card" style="padding:12px;cursor:pointer;text-align:center" onclick="showToast('🎱 Pool added!')"><div style="font-size:26px;margin-bottom:6px">🎱</div><p style="font-size:13px;font-weight:700;color:var(--t1)">Pool / Snooker</p><p style="font-size:10px;color:var(--t3);margin:2px 0">Snookerclub · 5.3 km</p><span style="background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:6px;font-size:9px;font-weight:700">Rare</span></div>
+    </div>
+  </div>
+
+  <div class="bn"><div class="bni" onclick="go('home')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="1.8" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Home</span></div><div class="bni on"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="white" stroke-width="1.3"/><circle cx="7.5" cy="7.5" r="2.5" fill="white"/></svg></div><span class="blb">Explore</span></div><div class="bni" onclick="go('friends')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="5" cy="5" r="2.2" stroke="var(--t3)" stroke-width="1.3"/><circle cx="10" cy="10" r="2.2" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Community</span></div><div class="bni" onclick="go('profile')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5.5" r="2.8" stroke="var(--t3)" stroke-width="1.3"/><path d="M2 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="var(--t3)" stroke-width="1.3" stroke-linecap="round"/></svg></div><span class="blb">Profile</span></div></div>
+</div>
+
+<!-- STEP 2: JOIN A SESSION -->
+<div class="screen" id="join">
+  <div class="sb"><span class="sbt">9:41</span></div>
+  <div style="padding:0 16px 8px"><button class="back" onclick="go('discover')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 12L5 7l4-5" stroke="var(--t1)" stroke-width="1.8" stroke-linecap="round"/></svg>Join a Session</button></div>
+  <div class="sa" style="padding:8px 16px 80px">
+    <div class="card cp" style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px"><p style="font-size:22px;font-weight:800;color:var(--g1)">Football</p><span style="background:var(--g1);color:#fff;padding:4px 12px;border-radius:8px;font-size:12px;font-weight:700">Free</span></div>
+      <p style="font-size:13px;color:var(--t3);margin-bottom:2px">Sporthal Deurne  -  0.8 km</p>
+      <p style="font-size:13px;color:var(--t2);margin-bottom:4px">Monday, 17 March 2026</p>
+      <p style="font-size:22px;font-weight:800;color:var(--t1)">18:00 - 19:30</p>
+    </div>
+    <p style="font-size:17px;font-weight:800;color:var(--t1);margin-bottom:2px">Players joining (4/10)</p>
+    <p style="font-size:13px;color:var(--t3);margin-bottom:12px">Spot available &#8212; book your place</p>
+    <div style="display:flex;gap:9px;margin-bottom:8px">
+      <div class="av" style="width:50px;height:50px;background:#1a3050;font-size:13px;color:#6b9fd4">AH</div>
+      <div class="av" style="width:50px;height:50px;background:#6a1515;font-size:13px;color:#f4a8a8">SR</div>
+      <div class="av" style="width:50px;height:50px;background:#1a3050;font-size:13px;color:#a8d4f4">WB</div>
+      <div class="av" style="width:50px;height:50px;background:#5a5a15;font-size:13px;color:#f0f0a0">KH</div>
+    </div>
+    <p style="font-size:13px;color:var(--t3);margin-bottom:8px">+ 6 more spots available</p>
+    <p style="font-size:13px;color:var(--t2);margin-bottom:6px">4 out of 10 spots taken</p>
+    <div class="pt" style="margin-bottom:16px"><div class="pf" style="width:40%"></div></div>
+    <div style="background:var(--gf);border-radius:12px;padding:12px 14px;border:1px solid var(--gb);margin-bottom:16px"><p style="font-size:14px;font-weight:700;color:var(--t1);margin-bottom:3px">What to bring</p><p style="font-size:13px;color:var(--t3)">Football boots  -  shin guards  -  water</p></div>
+    <button class="btn bg" style="font-size:16px;padding:14px" onclick="go('booked')">Book my spot</button>
+  </div>
+  <div class="bn"><div class="bni" onclick="go('home')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="1.8" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Home</span></div><div class="bni on"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="white" stroke-width="1.3"/><circle cx="7.5" cy="7.5" r="2.5" fill="white"/></svg></div><span class="blb">Explore</span></div><div class="bni" onclick="go('friends')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="5" cy="5" r="2.2" stroke="var(--t3)" stroke-width="1.3"/><circle cx="10" cy="10" r="2.2" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Community</span></div><div class="bni" onclick="go('profile')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5.5" r="2.8" stroke="var(--t3)" stroke-width="1.3"/><path d="M2 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="var(--t3)" stroke-width="1.3" stroke-linecap="round"/></svg></div><span class="blb">Profile</span></div></div>
+</div>
+
+<!-- BOOKING CONFIRMED -->
+<div class="screen" id="booked">
+  <div class="sb"><span class="sbt">9:41</span></div>
+  <div style="flex:1;display:flex;flex-direction:column;padding:16px;gap:12px;overflow-y:auto">
+    <div style="background:var(--g1);border-radius:16px;padding:22px;text-align:center"><div style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.2);margin:0 auto 12px;display:flex;align-items:center;justify-content:center"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M5 14l6 6L23 8" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p style="font-size:20px;font-weight:800;color:#fff;margin-bottom:4px">You're booked! &#127881;</p><p style="font-size:13px;color:rgba(255,255,255,.75)">Football  ·  Sporthal Deurne  ·  Monday 18:00</p></div>
+    <div class="card cp"><p style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:10px">Booking summary</p><div style="display:flex;flex-direction:column;gap:7px;font-size:12px"><div style="display:flex;justify-content:space-between"><span style="color:var(--t3)">Session</span><span style="font-weight:600;color:var(--t1)">Football &#8212; beginner</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--t3)">Venue</span><span style="color:var(--t1)">Sporthal Deurne</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--t3)">Time</span><span style="color:var(--t1)">Monday 18:00 &#8211; 19:30</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--t3)">Playing with</span><span style="color:var(--t1)">Ahmed, Sara, Wissame, Kazi</span></div><div style="height:1px;background:var(--gb)"></div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;font-weight:700;color:var(--t1)">Cost</span><span style="font-size:15px;font-weight:800;color:var(--ok)">Free (voucher applied)</span></div></div></div>
+    <button class="btn bg" onclick="go('home')">Go to home dashboard</button>
+    <button class="btn bo" onclick="go('friends')">See who else is playing</button>
+  </div>
+</div>
+
+<!-- STEP 3: CONNECT WITH FRIENDS -->
+<div class="screen" id="friends">
+  <div class="sb"><span class="sbt">9:41</span></div>
+  <div style="padding:0 16px 8px"><p style="font-size:24px;font-weight:800;color:var(--t1);margin-bottom:2px">Connect With Friends</p><p style="font-size:13px;color:var(--t3)">See who is playing near you</p></div>
+  <div class="sa" style="padding:8px 16px 80px">
+    <div class="fc"><div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><div class="av" style="width:50px;height:50px;background:#7b2d8b;font-size:14px;color:#e8b4f0">RD</div><div style="flex:1"><p style="font-size:15px;font-weight:800;color:var(--t1)">Rim Dikri</p><p style="font-size:12px;color:var(--g1);font-weight:600;margin-top:1px">Padel  -  Saturday 10:00</p><p style="font-size:11px;color:var(--t3)">Sporthal Deurne</p></div><span style="background:var(--g1);color:#fff;padding:3px 11px;border-radius:20px;font-size:11px;font-weight:700">Going</span></div><button class="btn bg" style="font-size:13px;padding:9px" onclick="showToast('Joining Rim Padel session!')">Join together  -></button></div>
+    <div class="fc"><div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><div class="av" style="width:50px;height:50px;background:#1a3a5c;font-size:14px;color:#6b9fd4">WB</div><div style="flex:1"><p style="font-size:15px;font-weight:800;color:var(--t1)">Wissame Bouaarfa</p><p style="font-size:12px;color:var(--g1);font-weight:600;margin-top:1px">Football  -  Monday 18:00</p><p style="font-size:11px;color:var(--t3)">Sporthal Deurne</p></div><span style="background:var(--g1);color:#fff;padding:3px 11px;border-radius:20px;font-size:11px;font-weight:700">Going</span></div><button class="btn bg" style="font-size:13px;padding:9px" onclick="go('join')">Join together  -></button></div>
+    <div class="fc"><div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><div class="av" style="width:50px;height:50px;background:#1a4a1a;font-size:14px;color:#8BC34A">KH</div><div style="flex:1"><p style="font-size:15px;font-weight:800;color:var(--t1)">Kazi Hossain</p><p style="font-size:12px;color:var(--g1);font-weight:600;margin-top:1px">Tennis  -  Wednesday 19:30</p><p style="font-size:11px;color:var(--t3)">TC Antwerp</p></div><span style="background:var(--warn);color:#fff;padding:3px 11px;border-radius:20px;font-size:11px;font-weight:700">Maybe</span></div><button class="btn bg" style="font-size:13px;padding:9px" onclick="showToast('Invited Kazi to Tennis!')">Join together  -></button></div>
+    <div class="fc"><div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><div class="av" style="width:50px;height:50px;background:#5a3010;font-size:14px;color:#f4d8a8">JP</div><div style="flex:1"><p style="font-size:15px;font-weight:800;color:var(--t1)">Jean Paul Iradukunda</p><p style="font-size:12px;color:var(--g1);font-weight:600;margin-top:1px">Basketball  -  Friday 19:00</p><p style="font-size:11px;color:var(--t3)">Sporthal Merksem</p></div><span style="background:var(--g1);color:#fff;padding:3px 11px;border-radius:20px;font-size:11px;font-weight:700">Going</span></div><button class="btn bg" style="font-size:13px;padding:9px" onclick="showToast('Joining Basketball session!')">Join together  -></button></div>
+  </div>
+  <div class="bn"><div class="bni" onclick="go('home')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="1.8" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Home</span></div><div class="bni" onclick="go('discover')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Explore</span></div><div class="bni on"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="5" cy="5" r="2.2" stroke="white" stroke-width="1.3"/><circle cx="10" cy="10" r="2.2" stroke="white" stroke-width="1.3"/></svg></div><span class="blb">Community</span></div><div class="bni" onclick="go('profile')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5.5" r="2.8" stroke="var(--t3)" stroke-width="1.3"/><path d="M2 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="var(--t3)" stroke-width="1.3" stroke-linecap="round"/></svg></div><span class="blb">Profile</span></div></div>
+</div>
+
+<!-- STEP 4: AVAILABLE TIMES -->
+<div class="screen" id="times">
+  <div class="sb"><span class="sbt">9:41</span></div>
+  <div style="padding:0 16px 8px"><p style="font-size:24px;font-weight:800;color:var(--t1);margin-bottom:2px">Available Times</p><p style="font-size:13px;color:var(--t3)">Monday, 17 March 2026</p></div>
+  <div class="sa" style="padding:8px 16px 80px">
+    <div style="display:flex;gap:5px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px">
+      <button class="db sel" id="d0" onclick="sd(0)"><span class="da">Mo</span><span class="dn">17</span></button>
+      <button class="db" id="d1" onclick="sd(1)"><span class="da">Tu</span><span class="dn">18</span></button>
+      <button class="db" id="d2" onclick="sd(2)"><span class="da">We</span><span class="dn">19</span></button>
+      <button class="db" id="d3" onclick="sd(3)"><span class="da">Th</span><span class="dn">20</span></button>
+      <button class="db" id="d4" onclick="sd(4)"><span class="da">Fr</span><span class="dn">21</span></button>
+      <button class="db" id="d5" onclick="sd(5)"><span class="da">Sa</span><span class="dn">22</span></button>
+      <button class="db" id="d6" onclick="sd(6)"><span class="da">Su</span><span class="dn">23</span></button>
+    </div>
+    <p style="font-size:17px;font-weight:800;color:var(--t1);margin-bottom:10px">Sessions today</p>
+    <div class="ts" onclick="showToast('Yoga session booked!')"><div class="tb"><p class="tv">09:00</p></div><div class="sbar" style="background:var(--g2)"></div><div style="flex:1"><p style="font-size:14px;font-weight:800;color:var(--t1)">Yoga</p><p style="font-size:12px;color:var(--t3)">Park Rivierenhof</p></div><span class="tag">8 spots</span></div>
+    <div class="ts" onclick="showToast('Basketball session booked!')"><div class="tb"><p class="tv">12:00</p></div><div class="sbar" style="background:var(--info)"></div><div style="flex:1"><p style="font-size:14px;font-weight:800;color:var(--t1)">Basketball</p><p style="font-size:12px;color:var(--t3)">Sporthal Merksem</p></div><span class="tag">10 spots</span></div>
+    <div class="ts" onclick="go('join')"><div class="tb"><p class="tv">15:00</p></div><div class="sbar" style="background:var(--warn)"></div><div style="flex:1"><p style="font-size:14px;font-weight:800;color:var(--t1)">Tennis</p><p style="font-size:12px;color:var(--t3)">TC Antwerp</p></div><span class="tag">3 spots</span></div>
+    <div class="ts" onclick="go('join')"><div class="tb"><p class="tv">18:00</p></div><div class="sbar" style="background:var(--g1)"></div><div style="flex:1"><p style="font-size:14px;font-weight:800;color:var(--t1)">Football</p><p style="font-size:12px;color:var(--t3)">Sporthal Deurne</p></div><span class="tag">4 spots</span></div>
+    <div class="ts" onclick="showToast('Tennis 20:00 booked!')"><div class="tb"><p class="tv">20:00</p></div><div class="sbar" style="background:var(--warn)"></div><div style="flex:1"><p style="font-size:14px;font-weight:800;color:var(--t1)">Tennis</p><p style="font-size:12px;color:var(--t3)">TC Wilrijk</p></div><span class="tag">2 spots</span></div>
+  </div>
+  <div class="bn"><div class="bni on"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="1.8" stroke="white" stroke-width="1.3"/></svg></div><span class="blb">Home</span></div><div class="bni" onclick="go('discover')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Explore</span></div><div class="bni" onclick="go('friends')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="5" cy="5" r="2.2" stroke="var(--t3)" stroke-width="1.3"/><circle cx="10" cy="10" r="2.2" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Community</span></div><div class="bni" onclick="go('profile')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5.5" r="2.8" stroke="var(--t3)" stroke-width="1.3"/><path d="M2 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="var(--t3)" stroke-width="1.3" stroke-linecap="round"/></svg></div><span class="blb">Profile</span></div></div>
+</div>
+
+<!-- HOME DASHBOARD -->
+<div class="screen" id="home">
+  <div class="sb"><span class="sbt">9:41</span></div>
+  <div style="padding:0 16px 8px;display:flex;justify-content:space-between;align-items:center"><div><p style="font-size:12px;color:var(--t3)">March 2026</p><p style="font-size:20px;font-weight:800;color:var(--t1)">Your SportMatch</p></div><div class="av" style="width:40px;height:40px;background:var(--g1);font-size:13px;color:#fff;cursor:pointer" onclick="go('profile')">JV</div></div>
+  <div class="sa" style="padding:0 16px 80px">
+    <div style="background:var(--g1);border-radius:16px;padding:15px;margin-bottom:14px"><p style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.08em;margin-bottom:10px">THIS MONTH</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div><p style="font-size:27px;font-weight:800;color:#fff">8</p><p style="font-size:11px;color:rgba(255,255,255,.6)">sessions played</p></div><div><p style="font-size:27px;font-weight:800;color:#fff">&#8364;64</p><p style="font-size:11px;color:rgba(255,255,255,.6)">saved w/ vouchers</p></div><div><p style="font-size:27px;font-weight:800;color:#fff">4.2kg</p><p style="font-size:11px;color:rgba(255,255,255,.6)">CO&#8322; avoided</p></div><div><p style="font-size:27px;font-weight:800;color:#fff">6</p><p style="font-size:11px;color:rgba(255,255,255,.6)">new connections</p></div></div></div>
+    <p class="slbl">NEXT SESSION</p>
+    <div class="card cp" style="margin-bottom:14px;cursor:pointer" onclick="go('join')"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><p style="font-size:14px;font-weight:700;color:var(--t1)">Football &#8212; Sporthal Deurne</p><span style="background:#F0FDF4;color:#15803D;border:1px solid #86EFAC;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:600">Confirmed</span></div><p style="font-size:11px;color:var(--t3);margin-bottom:7px">Monday 18:00  ·  Wissame carpooling</p><div class="pt" style="background:var(--gl)"><div class="pf" style="width:40%"></div></div><p style="font-size:10px;color:var(--t3);margin-top:4px">4 of 10 players confirmed</p></div>
+    <p class="slbl">VOUCHER WALLET</p>
+    <div class="card cp" style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><p style="font-size:14px;font-weight:700;color:var(--t1)">Sport voucher balance</p><p style="font-size:16px;font-weight:800;color:var(--ok)">&#8364;36</p></div><p style="font-size:11px;color:var(--t3);margin-bottom:6px">From: employer wellness program</p><div class="pt" style="background:var(--gl)"><div class="pf" style="width:60%;background:var(--ok)"></div></div><p style="font-size:10px;color:var(--warn);margin-top:4px">Expires in 47 days</p></div>
+    <p class="slbl">QUICK ACTIONS</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="card" style="padding:14px;cursor:pointer;text-align:center" onclick="go('discover')"><p style="font-size:22px;margin-bottom:6px">&#9917;</p><p style="font-size:12px;font-weight:700;color:var(--t1)">Discover Sports</p></div>
+      <div class="card" style="padding:14px;cursor:pointer;text-align:center" onclick="go('times')"><p style="font-size:22px;margin-bottom:6px">&#128336;</p><p style="font-size:12px;font-weight:700;color:var(--t1)">View Times</p></div>
+      <div class="card" style="padding:14px;cursor:pointer;text-align:center" onclick="go('friends')"><p style="font-size:22px;margin-bottom:6px">&#128101;</p><p style="font-size:12px;font-weight:700;color:var(--t1)">Connect Friends</p></div>
+      <div class="card" style="padding:14px;cursor:pointer;text-align:center" onclick="go('join')"><p style="font-size:22px;margin-bottom:6px">&#128197;</p><p style="font-size:12px;font-weight:700;color:var(--t1)">Join Session</p></div>
+    </div>
+  </div>
+  <div class="bn"><div class="bni on"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="1.8" stroke="white" stroke-width="1.3"/></svg></div><span class="blb">Home</span></div><div class="bni" onclick="go('discover')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Explore</span></div><div class="bni" onclick="go('friends')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="5" cy="5" r="2.2" stroke="var(--t3)" stroke-width="1.3"/><circle cx="10" cy="10" r="2.2" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Community</span></div><div class="bni" onclick="go('profile')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5.5" r="2.8" stroke="var(--t3)" stroke-width="1.3"/><path d="M2 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="var(--t3)" stroke-width="1.3" stroke-linecap="round"/></svg></div><span class="blb">Profile</span></div></div>
+</div>
+
+<!-- PROFILE -->
+<div class="screen" id="profile">
+  <div class="sb"><span class="sbt">9:41</span></div>
+  <div style="padding:0 16px 8px;display:flex;justify-content:space-between;align-items:center"><p style="font-size:20px;font-weight:800;color:var(--t1)">My Profile</p><button class="btn bo" style="width:auto;padding:7px 14px;font-size:12px" onclick="showToast('Settings coming soon!')">Settings</button></div>
+  <div class="sa" style="padding:0 16px 80px">
+    <div class="card cp" style="text-align:center;margin-bottom:12px"><div class="av" style="width:64px;height:64px;background:var(--g1);font-size:22px;color:#fff;margin:0 auto 12px">JV</div><p style="font-size:17px;font-weight:800;color:var(--t1)">Jean Paul</p><p style="font-size:12px;color:var(--t3);margin-top:2px">Antwerp &#183; Member since Jan 2026</p><div style="display:flex;gap:7px;justify-content:center;margin-top:10px"><span class="tag">Football</span><span class="tag">Padel</span><span class="tag">Yoga</span></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px">
+      <div class="card" style="padding:13px;text-align:center"><p style="font-size:22px;font-weight:800;color:var(--t1)">8</p><p style="font-size:10px;color:var(--t3);margin-top:2px">sessions</p></div>
+      <div class="card" style="padding:13px;text-align:center"><p style="font-size:22px;font-weight:800;color:var(--t1)">6</p><p style="font-size:10px;color:var(--t3);margin-top:2px">teammates</p></div>
+      <div class="card" style="padding:13px;text-align:center"><p style="font-size:22px;font-weight:800;color:var(--warn)">4.8</p><p style="font-size:10px;color:var(--t3);margin-top:2px">spirit &#11088;</p></div>
+    </div>
+    <p class="slbl">MY SESSIONS</p>
+    <div class="card" style="padding:11px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="go('join')"><div><p style="font-size:13px;font-weight:600;color:var(--t1)">Football &#8212; Sporthal Deurne</p><p style="font-size:10px;color:var(--t3);margin-top:2px">Monday 18:00 &#183; next session</p></div><span style="background:#F0FDF4;color:#15803D;border:1px solid #86EFAC;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:600">Upcoming</span></div>
+    <div class="card" style="padding:11px 14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center"><div><p style="font-size:13px;font-weight:600;color:var(--t1)">Yoga &#8212; Park Rivierenhof</p><p style="font-size:10px;color:var(--t3);margin-top:2px">Last Wednesday &#183; 8 players</p></div><span style="color:var(--warn);font-size:13px;font-weight:700">&#9733; 4.8</span></div>
+    <button class="btn bg" style="margin-bottom:8px" onclick="go('discover')">Find new sport &#8594;</button>
+    <button class="btn bo" onclick="go('splash')">Sign out</button>
+  </div>
+  <div class="bn"><div class="bni" onclick="go('home')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="1.8" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Home</span></div><div class="bni" onclick="go('discover')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Explore</span></div><div class="bni" onclick="go('friends')"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="5" cy="5" r="2.2" stroke="var(--t3)" stroke-width="1.3"/><circle cx="10" cy="10" r="2.2" stroke="var(--t3)" stroke-width="1.3"/></svg></div><span class="blb">Community</span></div><div class="bni on"><div class="bic"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5.5" r="2.8" stroke="white" stroke-width="1.3"/><path d="M2 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg></div><span class="blb">Profile</span></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+</div>
+<script>
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));var el=document.getElementById(id);if(el){el.classList.add('active');var sa=el.querySelector('.sa');if(sa)sa.scrollTop=0;}}
+function sd(i){for(var j=0;j<7;j++)document.getElementById('d'+j).classList.toggle('sel',j===i);var d=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];showToast(d[i]+' sessions loaded');}
+function switchTab(t){var isPop=t==='pop';document.getElementById('list-pop').style.display=isPop?'block':'none';document.getElementById('list-rare').style.display=isPop?'none':'block';document.getElementById('tab-pop').style.cssText=isPop?'flex:1;padding:8px;border-radius:10px;border:none;background:var(--g1);color:#fff;font-weight:700;font-size:13px;cursor:pointer':'flex:1;padding:8px;border-radius:10px;border:1px solid var(--gborder);background:#fff;color:var(--t2);font-weight:600;font-size:13px;cursor:pointer';document.getElementById('tab-rare').style.cssText=isPop?'flex:1;padding:8px;border-radius:10px;border:1px solid var(--gborder);background:#fff;color:var(--t2);font-weight:600;font-size:13px;cursor:pointer':'flex:1;padding:8px;border-radius:10px;border:none;background:var(--g1);color:#fff;font-weight:700;font-size:13px;cursor:pointer';}
+var tt;function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show');},2200);}
+</script>
+</body>
+</html>
